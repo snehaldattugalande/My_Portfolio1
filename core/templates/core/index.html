@@ -1,0 +1,182 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ profile.name|default:"Portfolio" }} | {{ profile.title|default:"Data Engineer" }}</title>
+    <meta name="description" content="Portfolio of {{ profile.name|default:'Data Engineer' }}, a {{ profile.title|default:'Data Engineer' }} — {{ profile.subtitle|default:'' }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&family=Space+Grotesk:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'core/style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <canvas id="bg-canvas"></canvas>
+
+    <!-- Navigation -->
+    <nav class="navbar glass-panel">
+        <div class="logo">
+            <span class="neon-text-blue">Snehal</span>_<span class="neon-text-purple">Galande</span>
+        </div>
+        <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <div class="nav-right" id="nav-right">
+            <ul class="nav-links">
+                <li><a href="#about">About</a></li>
+                <li><a href="#skills">Skills</a></li>
+                <li><a href="#projects">Pipelines</a></li>
+                <li><a href="#certifications">Certifications</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            {% if profile.resume_link %}
+            <a href="{{ profile.resume_link }}" target="_blank" class="neon-btn resume-btn">Resume</a>
+            {% else %}
+            <a href="#" class="neon-btn resume-btn">Resume</a>
+            {% endif %}
+        </div>
+    </nav>
+    <div class="nav-overlay" id="nav-overlay"></div>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="hero" class="hero-section">
+            <div class="hero-content">
+                <p class="greeting">{{ profile.greeting_code|default:"// INIT()" }}</p>
+                <h1 class="glitch" data-text="{{ profile.name|default:'DATA ENGINEER'|upper }}">{{ profile.name|default:"DATA ENGINEER"|upper }}</h1>
+                <h2 class="subtitle">{{ profile.subtitle|default:"Building scalable architectures & intelligent pipelines." }}</h2>
+
+                <div class="terminal glass-panel">
+                    <div class="terminal-header">
+                        <span class="btn-close"></span>
+                        <span class="btn-min"></span>
+                        <span class="btn-max"></span>
+                        <span class="terminal-title">{{ profile.name|default:"guest"|lower|truncatewords:1 }}@portfolio: ~</span>
+                    </div>
+                    <div class="terminal-body" id="terminal-body">
+                        <p><span class="prompt">{{ profile.name|default:"guest"|lower|truncatewords:1 }}@portfolio:~$</span> <span class="typing-text">{{ profile.terminal_command|default:"./execute_intro.sh" }}</span></p>
+                        <p class="terminal-output delay-1">Loading modules... [OK]</p>
+                        <p class="terminal-output delay-2">Connecting to data warehouse... [OK]</p>
+                        <p class="terminal-output delay-3">{{ profile.terminal_output|default:"Hello, world!" }}</p>
+                        <p><span class="prompt">{{ profile.name|default:"guest"|lower|truncatewords:1 }}@portfolio:~$</span> <span class="cursor">_</span></p>
+                    </div>
+                </div>
+                <div class="cta-container">
+                    <a href="#projects" class="neon-btn">{{ profile.cta_text|default:"Explore Pipelines" }}</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="section">
+            <h2 class="section-title"><span class="neon-text-blue">01.</span> Who Am I?</h2>
+            <div class="about-grid">
+                <div class="about-text glass-panel hover-glow">
+                    <p>{{ profile.about_text|default:"" }}</p>
+                    {% if profile.about_text_2 %}
+                    <p>{{ profile.about_text_2 }}</p>
+                    {% endif %}
+                </div>
+                <div class="about-stats glass-panel hover-glow">
+                    {% for stat in stats %}
+                    <div class="stat-item">
+                        <i class="{{ stat.icon }} neon-text-{{ stat.icon_color }}"></i>
+                        <h3>{{ stat.value }}</h3>
+                        <p>{{ stat.label }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills Section -->
+        <section id="skills" class="section">
+            <h2 class="section-title"><span class="neon-text-purple">02.</span> Tech Stack</h2>
+            <div class="skills-container">
+                {% for category in skill_categories %}
+                <div class="skill-category glass-panel hover-glow">
+                    <h3>{{ category.name }}</h3>
+                    <div class="skill-tags">
+                        {% for skill in category.skills.all %}
+                        <span class="tag">{{ skill.name }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="section">
+            <h2 class="section-title"><span class="neon-text-blue">03.</span> Featured Pipelines</h2>
+            <div class="projects-grid">
+                {% for project in projects %}
+                <div class="project-card glass-panel hover-glow">
+                    <div class="project-links">
+                        {% if project.github_url %}
+                        <a href="{{ project.github_url }}" target="_blank"><i class="fa-brands fa-github"></i></a>
+                        {% endif %}
+                        {% if project.live_url %}
+                        <a href="{{ project.live_url }}" target="_blank"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                        {% endif %}
+                    </div>
+                    <h3 class="project-title">{{ project.title }}</h3>
+                    <p class="project-desc">{{ project.description }}</p>
+                    <div class="project-tech">
+                        {% for tech in project.technologies.all %}
+                        <span>{{ tech.name }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+
+        <!-- Certifications Section -->
+        <section id="certifications" class="section">
+            <h2 class="section-title"><span class="neon-text-purple">04.</span> Certifications</h2>
+            <div class="cert-grid">
+                {% for cert in certifications %}
+                <a href="{{ cert.verify_url }}" target="_blank" class="cert-card glass-panel hover-glow">
+                    <div class="cert-icon">
+                        <i class="{{ cert.icon }} neon-text-{{ cert.icon_color }}"></i>
+                    </div>
+                    <div class="cert-info">
+                        <h3 class="cert-title">{{ cert.title }}</h3>
+                        <p class="cert-issuer">{{ cert.issuer }}</p>
+                        <p class="cert-date"><i class="fa-solid fa-arrow-up-right-from-square"></i> Verify</p>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="section contact-section">
+            <h2 class="section-title"><span class="neon-text-blue">05.</span> Init Connection</h2>
+            <div class="contact-card glass-panel hover-glow">
+                <p>{{ profile.contact_message|default:"Get in touch!" }}</p>
+                <a href="mailto:{{ profile.email|default:'hello@example.com' }}" class="neon-btn outline">Ping Me</a>
+                <div class="social-links">
+                    {% for link in social_links %}
+                    <a href="{{ link.url }}" target="_blank"><i class="{{ link.icon }}"></i></a>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>Designed & Engineered by <span class="neon-text-blue">{{ profile.name|default:"Data Engineer" }}</span></p>
+        {% if profile.footer_text %}
+        <p class="version">{{ profile.footer_text }}</p>
+        {% endif %}
+    </footer>
+
+    <script src="{% static 'core/script.js' %}"></script>
+</body>
+</html>
