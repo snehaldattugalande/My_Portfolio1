@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.utils.html import mark_safe
 from .models import (
     Profile, Stat, SkillCategory, Skill,
     Project, ProjectTech, Certification, SocialLink
@@ -61,36 +62,66 @@ class SkillCategoryAdmin(admin.ModelAdmin):
 
 @admin.register(Project)
 class ProjectAdmin(admin.ModelAdmin):
-    list_display = ('title', 'order')
+    list_display = ('title', 'image_thumbnail', 'order')
     list_editable = ('order',)
     inlines = [ProjectTechInline]
+    readonly_fields = ('image_preview',)
     fieldsets = (
         ('Project Info', {
             'fields': ('title', 'description', 'github_url', 'live_url', 'order')
         }),
         ('Project Image', {
-            'fields': ('image', 'image_url'),
+            'fields': ('image', 'image_url', 'image_preview'),
             'description': 'Upload an image file OR provide an external URL. Uploaded file takes priority.',
         }),
     )
 
+    def image_preview(self, obj):
+        img_url = obj.get_image()
+        if img_url:
+            return mark_safe(f'<img src="{img_url}" style="max-height: 150px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);" />')
+        return "No image uploaded or linked."
+    image_preview.short_description = "Image Preview"
+
+    def image_thumbnail(self, obj):
+        img_url = obj.get_image()
+        if img_url:
+            return mark_safe(f'<img src="{img_url}" style="max-height: 40px; border-radius: 4px;" />')
+        return "No Image"
+    image_thumbnail.short_description = "Thumbnail"
+
 
 @admin.register(Certification)
 class CertificationAdmin(admin.ModelAdmin):
-    list_display = ('title', 'issuer', 'icon_color', 'order')
+    list_display = ('title', 'issuer', 'image_thumbnail', 'icon_color', 'order')
     list_editable = ('order',)
+    readonly_fields = ('image_preview',)
     fieldsets = (
         ('Certification Info', {
             'fields': ('title', 'issuer', 'verify_url', 'icon', 'icon_color', 'order')
         }),
         ('Certification Image', {
-            'fields': ('image', 'image_url'),
+            'fields': ('image', 'image_url', 'image_preview'),
             'description': 'Upload a badge/certificate image OR provide an external URL. Uploaded file takes priority.',
         }),
     )
+
+    def image_preview(self, obj):
+        img_url = obj.get_image()
+        if img_url:
+            return mark_safe(f'<img src="{img_url}" style="max-height: 100px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);" />')
+        return "No image uploaded or linked."
+    image_preview.short_description = "Image Preview"
+
+    def image_thumbnail(self, obj):
+        img_url = obj.get_image()
+        if img_url:
+            return mark_safe(f'<img src="{img_url}" style="max-height: 40px; border-radius: 4px;" />')
+        return "No Image"
+    image_thumbnail.short_description = "Thumbnail"
 
 
 @admin.register(SocialLink)
 class SocialLinkAdmin(admin.ModelAdmin):
     list_display = ('platform', 'url', 'order')
-    list_editable = ('order',)
+    list_editable = ('order',)
