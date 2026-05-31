@@ -115,21 +115,32 @@
             <h2 class="section-title"><span class="neon-text-blue">03.</span> Featured Pipelines</h2>
             <div class="projects-grid">
                 {% for project in projects %}
-                <div class="project-card glass-panel hover-glow">
-                    <div class="project-links">
-                        {% if project.github_url %}
-                        <a href="{{ project.github_url }}" target="_blank"><i class="fa-brands fa-github"></i></a>
-                        {% endif %}
-                        {% if project.live_url %}
-                        <a href="{{ project.live_url }}" target="_blank"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
-                        {% endif %}
-                    </div>
+                <div class="project-item">
                     <h3 class="project-title">{{ project.title }}</h3>
-                    <p class="project-desc">{{ project.description }}</p>
-                    <div class="project-tech">
-                        {% for tech in project.technologies.all %}
-                        <span>{{ tech.name }}</span>
-                        {% endfor %}
+                    <div class="project-image-wrapper glass-panel hover-glow">
+                        {% with img=project.get_image %}
+                        {% if img %}
+                        <img src="{{ img }}" alt="{{ project.title }}" class="project-img">
+                        {% else %}
+                        <div class="project-placeholder gradient-{{ forloop.counter }}"></div>
+                        {% endif %}
+                        {% endwith %}
+                        <div class="project-overlay glass-panel">
+                            <p class="project-desc">{{ project.description|truncatechars:140 }}</p>
+                            <div class="project-tech">
+                                {% for tech in project.technologies.all %}
+                                <span>{{ tech.name }}</span>
+                                {% endfor %}
+                            </div>
+                            <div class="project-overlay-links">
+                                {% if project.github_url %}
+                                <a href="{{ project.github_url }}" target="_blank" class="neon-btn outline"><i class="fa-brands fa-github"></i> GitHub</a>
+                                {% endif %}
+                                {% if project.live_url %}
+                                <a href="{{ project.live_url }}" target="_blank" class="neon-btn"><i class="fa-solid fa-arrow-up-right-from-square"></i> Live</a>
+                                {% endif %}
+                            </div>
+                        </div>
                     </div>
                 </div>
                 {% endfor %}
@@ -141,16 +152,23 @@
             <h2 class="section-title"><span class="neon-text-purple">04.</span> Certifications</h2>
             <div class="cert-grid">
                 {% for cert in certifications %}
-                <a href="{{ cert.verify_url }}" target="_blank" class="cert-card glass-panel hover-glow">
-                    <div class="cert-icon">
-                        <i class="{{ cert.icon }} neon-text-{{ cert.icon_color }}"></i>
+                <div class="cert-item">
+                    <h3 class="cert-title">{{ cert.title }}</h3>
+                    <div class="cert-image-wrapper glass-panel hover-glow">
+                        {% with img=cert.get_image %}
+                        {% if img %}
+                        <img src="{{ img }}" alt="{{ cert.title }}" class="cert-img">
+                        {% else %}
+                        <div class="cert-placeholder cert-gradient-{{ forloop.counter }}"></div>
+                        {% endif %}
+                        {% endwith %}
+                        <div class="cert-overlay glass-panel">
+                            <h4 class="cert-overlay-title">{{ cert.title }}</h4>
+                            <p class="cert-overlay-issuer">Issued by: {{ cert.issuer }}</p>
+                            <a href="{{ cert.verify_url }}" target="_blank" class="neon-btn"><i class="fa-solid fa-arrow-up-right-from-square"></i> Verify</a>
+                        </div>
                     </div>
-                    <div class="cert-info">
-                        <h3 class="cert-title">{{ cert.title }}</h3>
-                        <p class="cert-issuer">{{ cert.issuer }}</p>
-                        <p class="cert-date"><i class="fa-solid fa-arrow-up-right-from-square"></i> Verify</p>
-                    </div>
-                </a>
+                </div>
                 {% endfor %}
             </div>
         </section>

@@ -78,10 +78,28 @@ class Project(models.Model):
     description = models.TextField()
     github_url = models.URLField(blank=True, default="")
     live_url = models.URLField(blank=True, default="")
+    image = models.ImageField(
+        upload_to='projects/',
+        blank=True,
+        null=True,
+        help_text="Upload an image file for this project"
+    )
+    image_url = models.CharField(
+        max_length=500,
+        blank=True,
+        default="",
+        help_text="OR provide an external image URL (used if no file is uploaded)"
+    )
     order = models.PositiveIntegerField(default=0)
 
     class Meta:
         ordering = ['order']
+
+    def get_image(self):
+        """Returns uploaded image URL first, falls back to image_url field."""
+        if self.image:
+            return self.image.url
+        return self.image_url or None
 
     def __str__(self):
         return self.title
@@ -106,10 +124,28 @@ class Certification(models.Model):
     icon = models.CharField(max_length=100, help_text="FontAwesome class, e.g. 'fa-solid fa-code'")
     icon_color = models.CharField(max_length=20, choices=[('blue', 'Neon Blue'), ('purple', 'Neon Purple')], default='blue')
     verify_url = models.URLField(help_text="Link to verify the certification")
+    image = models.ImageField(
+        upload_to='certifications/',
+        blank=True,
+        null=True,
+        help_text="Upload a badge/certificate image"
+    )
+    image_url = models.CharField(
+        max_length=500,
+        blank=True,
+        default="",
+        help_text="OR provide an external image URL (used if no file is uploaded)"
+    )
     order = models.PositiveIntegerField(default=0)
 
     class Meta:
         ordering = ['order']
+
+    def get_image(self):
+        """Returns uploaded image URL first, falls back to image_url field."""
+        if self.image:
+            return self.image.url
+        return self.image_url or None
 
     def __str__(self):
         return self.title

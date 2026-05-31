@@ -535,119 +535,188 @@ ul {
 /* ==========================================================================
    Projects Section
    ========================================================================== */
-.projects-grid {
+.projects-grid, .cert-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     gap: 30px;
     align-items: stretch;
 }
 
-.project-card {
-    padding: 30px;
+.project-item, .cert-item {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    min-height: 420px;
+    gap: 15px;
     height: 100%;
 }
 
-.project-links {
-    display: flex;
-    justify-content: flex-end;
-    gap: 15px;
-    margin-bottom: 20px;
-}
-
-.project-links a i {
+.project-item .project-title, .cert-item .cert-title {
     font-size: 1.2rem;
-    color: var(--text-secondary);
+    font-weight: 700;
+    margin: 0;
+    color: var(--text-primary);
+    text-align: left;
+    font-family: var(--font-heading);
 }
 
-.project-links a:hover i {
-    color: var(--neon-blue);
+.project-image-wrapper, .cert-image-wrapper {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 16 / 10;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(30, 41, 59, 0.02);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+    transition: var(--transition);
 }
 
-.project-title {
-    font-size: 1.4rem;
-    margin-bottom: 15px;
+.project-image-wrapper img, .cert-image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.project-image-wrapper:hover img, .cert-image-wrapper:hover img {
+    transform: scale(1.06);
+}
+
+.project-overlay, .cert-overlay {
+    position: absolute;
+    bottom: -100%;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    background: rgba(248, 250, 252, 0.95);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    transition: bottom 0.4s cubic-bezier(0.77, 0, 0.175, 1);
+    z-index: 2;
+}
+
+.project-image-wrapper:hover .project-overlay,
+.cert-image-wrapper:hover .cert-overlay {
+    bottom: 0;
 }
 
 .project-desc {
     color: var(--text-secondary);
-    margin-bottom: 25px;
-    flex-grow: 1;
-    line-height: 1.8;
+    font-size: 0.88rem;
+    line-height: 1.5;
+    margin-bottom: 10px;
 }
 
-.project-tech {
+.project-overlay .project-tech {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
-    margin-top: auto;
+    gap: 8px;
+    margin-bottom: 15px;
 }
 
-.project-tech span {
-    padding: 6px 12px;
-    border-radius: 20px;
+.project-overlay .project-tech span {
+    padding: 4px 10px;
+    border-radius: 12px;
     background: rgba(37, 99, 235, 0.08);
     border: 1px solid rgba(37, 99, 235, 0.12);
-    font-size: 0.75rem;
+    font-size: 0.72rem;
     font-weight: 600;
     color: var(--neon-purple);
 }
 
-/* ==========================================================================
-   Certifications Section
-   ========================================================================== */
-.cert-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 30px;
+.project-overlay-links, .cert-overlay a {
+    display: flex;
+    gap: 12px;
+    width: 100%;
+    margin-top: auto;
 }
 
-.cert-card {
-    padding: 30px;
+.project-overlay-links .neon-btn, .cert-overlay .neon-btn {
+    padding: 8px 16px;
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+    flex: 1;
+    text-align: center;
     display: flex;
     align-items: center;
-    gap: 25px;
+    justify-content: center;
+    gap: 6px;
+    min-height: 38px;
 }
 
-.cert-icon i {
-    font-size: 3rem;
-}
-
-.cert-title {
-    font-size: 1.1rem;
+.cert-overlay-title {
+    font-size: 1rem;
+    color: var(--text-primary);
     margin-bottom: 5px;
+    font-weight: 700;
 }
 
-.cert-issuer {
-    font-family: var(--font-mono);
-    font-size: 0.9rem;
+.cert-overlay-issuer {
     color: var(--neon-purple);
-    margin-bottom: 5px;
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    margin-bottom: 15px;
 }
 
-.cert-date {
-    font-size: 0.8rem;
-    color: var(--text-secondary);
+.project-placeholder, .cert-placeholder {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
 }
 
-a.cert-card {
-    text-decoration: none;
-    color: inherit;
-    cursor: pointer;
+.project-placeholder::after, .cert-placeholder::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.3) 50%, transparent 70%);
+    background-size: 200% 100%;
+    animation: shimmer 2.5s infinite;
 }
 
-a.cert-card .cert-date {
-    color: var(--neon-blue);
-    opacity: 0.7;
+@keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+.placeholder-icon {
+    font-size: 3rem;
     transition: var(--transition);
 }
 
-a.cert-card:hover .cert-date {
-    opacity: 1;
+.project-image-wrapper:hover .placeholder-icon,
+.cert-image-wrapper:hover .placeholder-icon {
+    transform: scale(1.1) translateY(-5px);
 }
+
+.cert-issuer-tag {
+    font-size: 0.78rem;
+    font-family: var(--font-mono);
+    color: var(--text-secondary);
+    background: rgba(255, 255, 255, 0.8);
+    padding: 4px 10px;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+}
+
+.gradient-1 { background: linear-gradient(135deg, rgba(37, 99, 235, 0.08), rgba(124, 58, 237, 0.08)); }
+.gradient-2 { background: linear-gradient(135deg, rgba(124, 58, 237, 0.08), rgba(37, 99, 235, 0.08)); }
+.gradient-3 { background: linear-gradient(135deg, rgba(37, 99, 235, 0.05), rgba(124, 58, 237, 0.12)); }
+
+.cert-gradient-1 { background: linear-gradient(135deg, rgba(37, 99, 235, 0.08), rgba(124, 58, 237, 0.04)); }
+.cert-gradient-2 { background: linear-gradient(135deg, rgba(124, 58, 237, 0.08), rgba(37, 99, 235, 0.04)); }
+.cert-gradient-3 { background: linear-gradient(135deg, rgba(37, 99, 235, 0.05), rgba(37, 99, 235, 0.12)); }
+.cert-gradient-4 { background: linear-gradient(135deg, rgba(124, 58, 237, 0.05), rgba(124, 58, 237, 0.12)); }
+.cert-gradient-5 { background: linear-gradient(135deg, rgba(37, 99, 235, 0.06), rgba(124, 58, 237, 0.06)); }
+.cert-gradient-6 { background: linear-gradient(135deg, rgba(124, 58, 237, 0.06), rgba(37, 99, 235, 0.06)); }
 
 /* ==========================================================================
    Contact Section

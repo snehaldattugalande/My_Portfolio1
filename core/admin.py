@@ -64,12 +64,30 @@ class ProjectAdmin(admin.ModelAdmin):
     list_display = ('title', 'order')
     list_editable = ('order',)
     inlines = [ProjectTechInline]
+    fieldsets = (
+        ('Project Info', {
+            'fields': ('title', 'description', 'github_url', 'live_url', 'order')
+        }),
+        ('Project Image', {
+            'fields': ('image', 'image_url'),
+            'description': 'Upload an image file OR provide an external URL. Uploaded file takes priority.',
+        }),
+    )
 
 
 @admin.register(Certification)
 class CertificationAdmin(admin.ModelAdmin):
     list_display = ('title', 'issuer', 'icon_color', 'order')
     list_editable = ('order',)
+    fieldsets = (
+        ('Certification Info', {
+            'fields': ('title', 'issuer', 'verify_url', 'icon', 'icon_color', 'order')
+        }),
+        ('Certification Image', {
+            'fields': ('image', 'image_url'),
+            'description': 'Upload a badge/certificate image OR provide an external URL. Uploaded file takes priority.',
+        }),
+    )
 
 
 @admin.register(SocialLink)

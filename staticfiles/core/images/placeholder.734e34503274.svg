@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200" width="100%" height="100%">
+  <defs>
+    <linearGradient id="neon-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="50%" stop-color="#1e1b4b" />
+      <stop offset="100%" stop-color="#311042" />
+    </linearGradient>
+    <linearGradient id="glow-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2563eb" stop-opacity="0.15" />
+      <stop offset="100%" stop-color="#7c3aed" stop-opacity="0.15" />
+    </linearGradient>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#neon-grad)" />
+  <rect width="100%" height="100%" fill="url(#glow-grad)" />
+  <!-- Grid overlay -->
+  <path d="M 0,20 L 400,20 M 0,40 L 400,40 M 0,60 L 400,60 M 0,80 L 400,80 M 0,100 L 400,100 M 0,120 L 400,120 M 0,140 L 400,140 M 0,160 L 400,160 M 0,180 L 400,180" stroke="rgba(255,255,255,0.03)" stroke-width="1" />
+  <path d="M 40,0 L 40,200 M 80,0 L 80,200 M 120,0 L 120,200 M 160,0 L 160,200 M 200,0 L 200,200 M 240,0 L 240,200 M 280,0 L 280,200 M 320,0 L 320,200 M 360,0 L 360,200" stroke="rgba(255,255,255,0.03)" stroke-width="1" />
+  <!-- Code symbol -->
+  <text x="50%" y="55%" dominant-baseline="middle" text-anchor="middle" font-family="'Fira Code', monospace" font-size="16" fill="rgba(37, 99, 235, 0.45)" letter-spacing="1">
+    &lt;SNEHAL_INIT /&gt;
+  </text>
+</svg>
