@@ -126,9 +126,9 @@
                         {% endif %}
                         {% endwith %}
                         <div class="project-overlay glass-panel">
-                            <p class="project-desc">{{ project.description|truncatechars:140 }}</p>
+                            <p class="project-desc">{{ project.description|truncatechars:100 }}</p>
                             <div class="project-tech">
-                                {% for tech in project.technologies.all %}
+                                {% for tech in project.technologies.all|slice:":5" %}
                                 <span>{{ tech.name }}</span>
                                 {% endfor %}
                             </div>

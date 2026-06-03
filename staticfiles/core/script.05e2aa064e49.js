@@ -5,7 +5,6 @@
 document.addEventListener("DOMContentLoaded", () => {
     initTerminalTyping();
     initMobileMenu();
-    initCanvasAnimation();
 });
 
 /**
@@ -65,7 +64,7 @@ function initCanvasAnimation() {
             this.vx = (Math.random() - 0.5) * 0.5;
             this.vy = (Math.random() - 0.5) * 0.5;
             this.radius = Math.random() * 2 + 1;
-            this.color = Math.random() > 0.5 ? '#00e5ff' : '#a855f7';
+            this.color = Math.random() > 0.5 ? '#2563eb' : '#7c3aed';
             this.opacity = Math.random() * 0.5 + 0.1;
         }
         
@@ -113,7 +112,7 @@ function initCanvasAnimation() {
                     
                     // Opacity based on distance
                     const opacity = 1 - (distance / 150);
-                    ctx.strokeStyle = `rgba(0, 229, 255, ${opacity * 0.15})`; // subtle connection
+                    ctx.strokeStyle = `rgba(139, 155, 180, ${opacity * 0.2})`; // subtle connection
                     ctx.lineWidth = 1;
                     ctx.stroke();
                 }
